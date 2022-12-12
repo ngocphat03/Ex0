@@ -34,8 +34,8 @@ namespace Script.PlayerController
 
         public void ChangeSpeedPlayer() 
         { 
-            this.Model.maxSpeed = 5f; 
-            Debug.Log("Max speed aplayer controller" + this.Model.maxSpeed);
+            this.Model.speed = this.Model.maxSpeed; 
+            Debug.Log("Max speed aplayer controller" + this.Model.speed);
         }
 
         public void ChangeSpeedToDefault()

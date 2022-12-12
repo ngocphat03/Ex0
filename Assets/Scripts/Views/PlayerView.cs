@@ -25,11 +25,11 @@ namespace Script.PlayerView
         private void Start() 
         {
         }
-        private void Update() 
+        private void FixedUpdate() 
         { 
            // Physics.gravity = AxitLibrary.DirectionVector(this.player, this.target);
            
-            Debug.LogWarning($"Speed : {this.Model.maxSpeed}");
+            Debug.LogWarning($"Speed : {this.Model.speed}");
             this.MovePlayerWithKey();
             // this.CheckAndResetSpeed();
         }
