@@ -22,16 +22,14 @@ namespace Script.PlayerView
             Instance = this; 
         }
 
-        private void Start() 
-        {
+        private void Update() {
+            
+            this.Controller.ReduceSpeedToZero();
         }
         private void FixedUpdate() 
         { 
-           // Physics.gravity = AxitLibrary.DirectionVector(this.player, this.target);
-           
-            Debug.LogWarning($"Speed : {this.Model.maxSpeed}");
             this.MovePlayerWithKey();
-            // this.CheckAndResetSpeed();
+            this.CheckAndResetSpeed();
         }
 
         private void MovePlayerWithKey() 
@@ -41,21 +39,33 @@ namespace Script.PlayerView
             //Move player to top
             if(Input.GetKey(KeyCode.W)) 
             { 
-                this.Model.movement += this.Model.speedOfMovement * this.Model.speed; 
+                this.Controller.ReduceSpeedToDefaut();
+                this.Model.movement += (this.Model.speedOfMovement * this.Model.speed) * this.Model.gravitationalAcceleration; 
             }
             //Move player to bottom
             if(Input.GetKey(KeyCode.S)) 
             { 
-                this.Model.movement -= this.Model.speedOfMovement * this.Model.speed; 
+                this.Controller.ReduceSpeedToDefaut();
+                this.Model.movement -= (this.Model.speedOfMovement * this.Model.speed) * this.Model.gravitationalAcceleration; 
+            }
+            if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+            {
+                if(rb.velocity != Vector3.zero && this.Model.inPlace)
+                {
+                    rb.velocity = AXitLibrary.DirectionVector(player, target) * this.Model.speed;
+                }
             }
             //Jump
-            if(Input.GetKeyDown(KeyCode.Space)) 
+            if(Input.GetKey(KeyCode.Space)) 
             { 
                 if(this.Model.inPlace)
-                    this.Model.movement += new Vector3(0f, this.Model.strength, 0f); 
+                {
+                    rb.AddForce(new Vector3(0f, this.Model.strength, 0f)); 
+                }
             }
 
             rb.AddForce(this.Model.movement);
+            this.Model.movement = Vector3.zero;
         }
 
         public void ChangeMaxSpeed() 

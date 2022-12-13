@@ -5,46 +5,39 @@ namespace Script.FixCamerFrontWall
     using UnityEngine;
 
     public class FixCameraFrontWall : MonoBehaviour
-    { [SerializeField]
-    private float _mouseSensitivity = 3.0f;
-
-    private float _rotationY;
-    private float _rotationX;
-
-    [SerializeField]
-    private Transform _target;
-
-    [SerializeField]
-    private float _distanceFromTarget = 3.0f;
-
-    private Vector3 _currentRotation;
-    private Vector3 _smoothVelocity = Vector3.zero;
-
-    [SerializeField]
-    private float _smoothTime = 0.2f;
-
-    [SerializeField]
-    private Vector2 _rotationXMinMax = new Vector2(-40, 40);
-
-    void Update()
     {
-        float mouseX = Input.GetAxis("Mouse X") * _mouseSensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * _mouseSensitivity;
+        [SerializeField] private  Transform cam;
+        [SerializeField] private  Transform target;
+        Vector3 cameraDirection;
+        public Vector2 cameraDistanceMinMax = new Vector2(0.5f, 5f);
 
-        _rotationY += mouseX;
-        _rotationX += mouseY;
+        public float camDistance;
 
-        // Apply clamping for x rotation 
-        _rotationX = Mathf.Clamp(_rotationX, _rotationXMinMax.x, _rotationXMinMax.y);
-
-        Vector3 nextRotation = new Vector3(_rotationX, _rotationY);
-
-        // Apply damping between rotation changes
-        _currentRotation = Vector3.SmoothDamp(_currentRotation, nextRotation, ref _smoothVelocity, _smoothTime);
-        transform.localEulerAngles = _currentRotation;
-
-        // Substract forward vector of the GameObject to point its forward vector to the target
-        transform.position = _target.position - transform.forward * _distanceFromTarget;
-    }
+        private void Start() 
+        {
+            cameraDirection =  transform.localPosition.normalized;
+            camDistance = cameraDistanceMinMax.y;
+        }
+        private void FixedUpdate() {
+            this.CheckCamera(cam);
+        }
+        private void CheckCamera(Transform cam)
+        {
+            Vector3 desiredCameraPosition = transform.TransformPoint(cameraDirection * 3);
+            RaycastHit hit;
+            if(Physics.Linecast(transform.position, desiredCameraPosition, out hit))
+            {
+                Debug.Log("ee");
+                //camDistance =Mathf.Clamp(hit.distance * 0.9f, cameraDistanceMinMax.x, cameraDistanceMinMax.y);
+                //camDistance = hit.point;
+                //cam.localPosition = cameraDirectionNow * camDistance;
+                cam.transform.position = target.transform.position;
+            }
+            else
+            {
+                camDistance = cameraDistanceMinMax.y;
+            }
+            cam.transform.localPosition = cameraDirection * (camDistance    ) ;
+        }
     }   
 }

@@ -7,20 +7,9 @@ namespace Script.ZoneSpeedUp
 
     public class ZoneSpeedUp : MonoBehaviour
     {
-        private void OnCollisionStay(Collision other)
-        {
-            // Debug.Log("Other trigger");
-            // if (other.gameObject.tag == "Player")
-            // {
-            //     Debug.Log("Player trigger");
-            //     PlayerView.Instance.ChangeMaxSpeed();
-            // }
-        }
         private void OnTriggerStay(Collider other) {
-            Debug.Log("Other trigger");
             if (other.gameObject.tag == "Player")
             {
-                Debug.LogError("Player trigger");
                 PlayerView.Instance.ChangeMaxSpeed();
             }
         }

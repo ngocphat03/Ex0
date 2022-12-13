@@ -37,6 +37,7 @@ namespace Script.GameManager
             if((second <= 0) && (minute <= 0)){
                 Debug.Log("Game Over");
                 this.StopGame();
+                this.EndGame();
             }
         }
 

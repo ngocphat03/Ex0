@@ -11,6 +11,7 @@ namespace Script.PlayerModel
         public float defaultSpeed;
         public float maxSpeed;
         public float strength;
+        public float gravitationalAcceleration;
         public Vector3 movement;
         public Vector3 rotation;
         public Vector3 speedRotation;
